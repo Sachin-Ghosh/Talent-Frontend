@@ -5,14 +5,19 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { ModeToggle } from './mode-toggle';
-const Nav = () => {
+import { IoIosMenu } from 'react-icons/io';
+import { useRouter } from 'next/router';
+const Nav = ({ toggleSidebar }) => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const router=useRouter();
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 bg-transparent backdrop-blur-md z-50">
-        <div className="container px-6 mx-auto md:flex">
-          <div className="flex items-center justify-between">
+      <nav className="fixed top-0 left-0 right-0 bg-transparent backdrop-blur-md z-50 border-b-2 border-blue-500">
+        <div className="container px-6 mx-auto md:flex md:justify-center md:items-center">
+      <Button className="bg-transparent active:ring active:rounded-full hover:border-2 hover:rounded-full hover:bg-transparent" onClick={toggleSidebar}>
+            <IoIosMenu size={30} color='grey'/>
+            </Button>
+          <div className="flex ml-10 items-center justify-between">
             <Link href="/" className='flex items-center justify-center'>
               <Image className="" src="/assets/Nav-logo.png" alt="Logo" width={80} height={80}/>
               <h1 className="text-xl font-bold hidden md:block text-nowrap">RecruitNest</h1>
@@ -74,7 +79,7 @@ const Nav = () => {
               />
             </div>
               <div className="">
-                <Button className="bg-blue-800 text-white font-semibold hover:bg-blue-700">Login</Button>
+                <Button className="bg-blue-800 text-white font-semibold hover:bg-blue-700" onClick={()=>{router.push('/Login')}}>Login</Button>
               </div>
               <ModeToggle/>
           </div>
