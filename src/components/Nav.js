@@ -79,7 +79,7 @@ const Nav = ({ toggleSidebar }) => {
               />
             </div>
               <div className="">
-                <Button className="bg-blue-800 text-white font-semibold hover:bg-blue-700" onClick={()=>{router.push('/Login')}}>Login</Button>
+                <Button className=" text-white font-semibold bg-red-600" onClick={()=>{router.push('/create-account')}}>Logout</Button>
               </div>
               <ModeToggle/>
           </div>
