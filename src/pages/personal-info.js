@@ -42,7 +42,7 @@ export default function UserProfilePage() {
   async function onSubmit(e) {
     e.preventDefault();
     try {
-      const response = await fetch('https://talent-backend-wfqd.onrender.com/api/candidates/register', {
+      const response = await fetch(`${process.env.API_URL}api/candidates/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

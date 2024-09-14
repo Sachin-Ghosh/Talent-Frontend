@@ -87,13 +87,13 @@ const SideNavbar = ({ isOpen }) => {
         {
             id: 4,
             name: 'Profile',
-            route: '/profile',
+            route: 'profile',
             icon: ImProfile
         },
         {
             id: 4,
             name: 'Blogs',
-            route: '/blogs',
+            route: 'blogs',
             icon: RiBloggerFill
         },
        
