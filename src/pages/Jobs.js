@@ -46,7 +46,7 @@ const JobsPage = ({ jobs }) => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-8 mt-14">
+    <div className="max-w-4xl mx-auto p-8 mt-14 min-h-screen">
       <h1 className="text-3xl font-bold mb-6">Available Jobs</h1>
 
       {/* Job Filter Component */}
