@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Toaster } from "@/components/ui/sonner"
 
 export default function App({ Component, pageProps }) {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
