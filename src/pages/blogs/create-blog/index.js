@@ -21,7 +21,12 @@ export default function CreateBlogPost() {
     <div className="container mx-auto p-4">
       <Card className=" mx-auto">
         <CardHeader>
+         <div className='flex flex-row align-middle gap-x-96'>
           <CardTitle>Create a New Blog Post</CardTitle>
+       <Button className='rounded-full w-1 text-white flex align-middle absolute right-16'> 
+      <a href='/blogs'> X</a> 
+       </Button>
+       </div>
           <CardDescription>Fill in the details for your new blog post</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
@@ -48,8 +53,8 @@ export default function CreateBlogPost() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="file">Upload Image or Document</Label>
-              <div className="flex items-center space-x-2">
+              <Label htmlFor="file">Upload Image Link</Label>
+              {/* <div className="flex items-center space-x-2">
                 <Input
                   id="file"
                   type="file"
@@ -68,7 +73,15 @@ export default function CreateBlogPost() {
                 <span className="text-sm text-muted-foreground">
                   {file ? file.name : 'No file chosen'}
                 </span>
-              </div>
+              </div> */}
+               <Input
+                id="image"
+                placeholder="Enter Your Image Link"
+                value={file}
+               
+                required
+                
+              />
             </div>
           </CardContent>
           <CardFooter>
