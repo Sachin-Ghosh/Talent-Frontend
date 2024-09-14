@@ -63,8 +63,11 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { RiBloggerFill } from "react-icons/ri";
 import { ImProfile } from "react-icons/im";
 import Link from 'next/link';
+import { Button } from './ui/button';
+import { useRouter } from 'next/router';
 
 const SideNavbar = ({ isOpen }) => {
+    const router=useRouter()
     const menu = [
         {
             id: 1,
@@ -81,7 +84,7 @@ const SideNavbar = ({ isOpen }) => {
         {
             id: 3,
             name: 'Jobs',
-            route: 'jobs', // Adjust route to lowercase
+            route: 'Jobs', // Adjust route to lowercase
             icon: BriefcaseBusiness,
         },
         {
@@ -100,16 +103,16 @@ const SideNavbar = ({ isOpen }) => {
     ];
 
     return (
-        <aside className={`dark:bg-slate-950 bg-white h-[90rem] absolute border-2 top-20 b order-2 left-0 transform mr-12 ${
+        <aside className={`dark:bg-slate-950 bg-white h-full absolute border-2 top-20 b order-2 left-0 transform mr-12 ${
             isOpen ? 'translate-x-0' : '-translate-x-full'
         } transition-transform duration-300 ease-in-out w-72 z-10`}>
             <div className="flex flex-col gap-4 px-4 py-3">
                 {menu.map((item, index) => (
-                    <div key={item.id} className={`flex items-center gap-3 p-2 cursor-pointer ${index === 0 ? 'bg-purple-700 text-white' : 'hover:bg-purple-700 hover:text-white'} rounded-md font-semibold`}>
+                    <Button onClick={()=>{router.push(`/${item.route}`)}} key={item.id} className={`flex items-center gap-3 p-2 cursor-pointer bg-transparent text-black font-semibold shadow-none ${index === 0 ? 'bg-purple-700 text-white' : 'hover:bg-purple-700 hover:text-white'} rounded-md font-semibold`}>
                         <item.icon size={20} />
-                        <Link href={`/${item.route}`}>{item.name}</Link>
+                        <span>{item.name}</span>
                         <IoIosArrowForward className="ml-auto"/>
-                    </div>
+                    </Button>
                 ))}
             </div>
         </aside>

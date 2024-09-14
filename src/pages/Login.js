@@ -153,7 +153,7 @@ const Login = () => {
 
       const data = await response.json();
       // Redirect to the dashboard on successful login
-      router.push('/dashboard');
+      router.push('/Login');
     } catch (error) {
       console.error('Error:', error);
       alert(error.message);

@@ -42,7 +42,7 @@ export default function UserProfilePage() {
   async function onSubmit(e) {
     e.preventDefault();
     try {
-      const response = await fetch('https://talent-backend-wfqd.onrender.com/api/candidates/register', {
+      const response = await fetch(`${process.env.API_URL}api/candidates/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -354,3 +354,143 @@ export default function UserProfilePage() {
     </div>
   )
 }
+
+// import React, { useEffect, useState } from 'react';
+// import { Avatar } from "@/components/ui/avatar";
+// import { Button } from "@/components/ui/button";
+// import { Card } from "@/components/ui/card";
+// import { Badge } from "@/components/ui/badge";
+// import { Briefcase, GraduationCap, Mail, MapPin, Phone } from "lucide-react";
+// import Image from 'next/image';
+
+// export default function ProfilePage() {
+//   const [profile, setProfile] = useState(null);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     const fetchProfile = async () => {
+//       try {
+//         const response = await fetch('https://talent-backend-wfqd.onrender.com/api/candidates/profile');
+//         if (!response.ok) {
+//           throw new Error('Failed to fetch profile');
+//         }
+//         const data = await response.json();
+//         setProfile(data);
+//       } catch (error) {
+//         console.error("Error fetching the profile data:", error);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchProfile();
+//   }, []);
+
+//   if (loading) {
+//     return <div>Loading...</div>;
+//   }
+
+//   if (!profile) {
+//     return <div>Error loading profile</div>;
+//   }
+
+//   return (
+//     <div className="container mx-auto p-4 space-y-6">
+//       <Card>
+//         <div className="p-6">
+//           <div className="flex flex-col md:flex-row gap-6">
+//             <Avatar className="w-32 h-32">
+//               <Image src="/assets/Nav-logo.png" alt="Profile picture" height={1000} width={1000} />
+//             </Avatar>
+//             <div className="space-y-2">
+//               <h1 className="text-3xl font-bold">{profile.userId.name}</h1>
+//               <p className="text-xl text-muted-foreground">{profile.userId.role}</p>
+//               <div className="flex flex-wrap gap-2">
+//                 <Badge variant="secondary" className="flex items-center gap-1">
+//                   <MapPin className="w-3 h-3" />
+//                   {profile.location || "Unknown Location"}
+//                 </Badge>
+//                 <Badge variant="secondary" className="flex items-center gap-1">
+//                   <Mail className="w-3 h-3" />
+//                   {profile.userId.email}
+//                 </Badge>
+//                 <Badge variant="secondary" className="flex items-center gap-1">
+//                   <Phone className="w-3 h-3" />
+//                   {profile.userId.phone || "(123) 456-7890"}
+//                 </Badge>
+//               </div>
+//             </div>
+//             <div className="flex-grow" />
+//             <Button>Edit Profile</Button>
+//           </div>
+//         </div>
+//       </Card>
+
+//       <Card>
+//         <div>
+//           <h2 className="text-2xl font-bold p-6">Profile Summary</h2>
+//         </div>
+//         <div className="p-6">
+//           <p>{profile.summary || "No summary available"}</p>
+//         </div>
+//       </Card>
+
+//       <Card>
+//         <div>
+//           <h2 className="text-2xl font-bold p-6">Work Experience</h2>
+//         </div>
+//         <div className="p-6 space-y-6">
+//           {profile.experience.length > 0 ? (
+//             profile.experience.map((exp, index) => (
+//               <div key={index} className="space-y-2">
+//                 <div className="flex items-center gap-2">
+//                   <Briefcase className="w-4 h-4 text-muted-foreground" />
+//                   <h3 className="font-semibold">{exp.role}</h3>
+//                 </div>
+//                 <p className="text-sm text-muted-foreground">{exp.companyName} | {exp.yearsWorked} years</p>
+//               </div>
+//             ))
+//           ) : (
+//             <p>No work experience available</p>
+//           )}
+//         </div>
+//       </Card>
+
+//       <Card>
+//         <div>
+//           <h2 className="text-2xl font-bold p-6">Education</h2>
+//         </div>
+//         <div className="p-6 space-y-6">
+//           {profile.education ? (
+//             <div className="space-y-2">
+//               <div className="flex items-center gap-2">
+//                 <GraduationCap className="w-4 h-4 text-muted-foreground" />
+//                 <h3 className="font-semibold">{profile.education.degree}</h3>
+//               </div>
+//               <p className="text-sm text-muted-foreground">{profile.education.institution} | {profile.education.yearOfCompletion}</p>
+//             </div>
+//           ) : (
+//             <p>No education information available</p>
+//           )}
+//         </div>
+//       </Card>
+
+//       <Card>
+//         <div>
+//           <h2 className="text-2xl font-bold p-6">Skills</h2>
+//         </div>
+//         <div className="p-6">
+//           <div className="flex flex-wrap gap-2">
+//             {profile.skills.length > 0 ? (
+//               profile.skills.map((skill, index) => (
+//                 <Badge key={index} variant="secondary">{skill}</Badge>
+//               ))
+//             ) : (
+//               <p>No skills available</p>
+//             )}
+//           </div>
+//         </div>
+//       </Card>
+//     </div>
+//   );
+// }

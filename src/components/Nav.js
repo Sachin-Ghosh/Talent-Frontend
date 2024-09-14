@@ -2,21 +2,41 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { ModeToggle } from './mode-toggle';
 import { IoIosMenu } from 'react-icons/io';
 import { useRouter } from 'next/router';
+
 const Nav = ({ toggleSidebar }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const router=useRouter();
+  const router = useRouter();
+
+  useEffect(() => {
+    // Check if the current route is '/test'
+    const isTestPage = router.pathname === '/test';
+    
+    // If on the test page, hide the navbar and sidebar
+    if (isTestPage) {
+      setIsOpen(false); // Close the mobile menu if it's open
+    }
+  }, [router.pathname]);
+
+  // Check if the current route is '/test'
+  const isTestPage = router.pathname === '/test';
+
+  // If on the test page, return null to hide the navbar and sidebar
+  if (isTestPage) {
+    return null;
+  }
+
   return (
     <>
       <nav className="relative top-0 left-0 right-0 bg-transparent backdrop-blur-md z-50 border-b-2 border-blue-500">
         <div className="container px-6 mx-auto md:flex md:justify-center md:items-center">
-      <Button className="bg-transparent active:ring active:rounded-full hover:border-2 hover:rounded-full hover:bg-transparent" onClick={toggleSidebar}>
+          <Button className="bg-transparent active:ring active:rounded-full hover:border-2 hover:rounded-full hover:bg-transparent" onClick={toggleSidebar}>
             <IoIosMenu size={30} color='grey'/>
-            </Button>
+          </Button>
           <div className="flex ml-10 items-center justify-between">
             <Link href="/" className='flex items-center justify-center'>
               <Image className="" src="/assets/Nav-logo.png" alt="Logo" width={80} height={80}/>
@@ -59,31 +79,31 @@ const Nav = ({ toggleSidebar }) => {
             className={`absolute inset-x-0 z-20 w-full px-6 py-4 transition-all duration-300 ease-in-out md:mt-0 md:p-0 md:top-0 md:relative md:opacity-100 md:translate-x-0 md:flex md:items-center md:justify-end ${isOpen ? 'block' : 'hidden'}`}
           >
             <div className="bg-gradient-to-r from-blue-900 to-blue-300 md:flex justify-center items-center py-1 px-10 rounded-full hidden">
-             <div className="flex flex-col justify-center -mx-4 md:flex-row md:mx-10 md:py-0">
-              <Link href="#" className="px-2.5 text-white transition-colors duration-300 transform rounded-lg dark:text-gray-200 md:mx-2">Home</Link>
-              <Link href="#" className="px-2.5 text-white transition-colors duration-300 transform rounded-lg dark:text-gray-200 md:mx-2">About</Link>
-              <Link href="#" className="px-2.5 text-white transition-colors duration-300 transform rounded-lg dark:text-gray-200 md:mx-2">Contact</Link>
-            </div>
-            <div className='flex gap-2 justify-center items-center'>
-            <div className="relative mt-4 md:mt-0">
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                <svg className="w-5 h-5 text-gray-800" viewBox="0 0 24 24" fill="none">
-                  <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
-                </svg>
-              </span>
-
-              <input
-                type="text"
-                className="w-full py-2 pl-10 pr-4 text-black bg-transparent border rounded-lg  dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-opacity-40 focus:ring-blue-300"
-                placeholder="Search"
-              />
-            </div>
-              <div className="">
-                <Button className=" text-white font-semibold bg-red-600" onClick={()=>{router.push('/create-account')}}>Logout</Button>
+              <div className="flex flex-col justify-center -mx-4 md:flex-row md:mx-10 md:py-0">
+                <Link href="#" className="px-2.5 text-white transition-colors duration-300 transform rounded-lg dark:text-gray-200 md:mx-2">Home</Link>
+                <Link href="#" className="px-2.5 text-white transition-colors duration-300 transform rounded-lg dark:text-gray-200 md:mx-2">About</Link>
+                <Link href="#" className="px-2.5 text-white transition-colors duration-300 transform rounded-lg dark:text-gray-200 md:mx-2">Contact</Link>
               </div>
-              <ModeToggle/>
-          </div>
-          </div>
+              <div className='flex gap-2 justify-center items-center'>
+                <div className="relative mt-4 md:mt-0">
+                  <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                    <svg className="w-5 h-5 text-gray-800" viewBox="0 0 24 24" fill="none">
+                      <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
+                    </svg>
+                  </span>
+
+                  <input
+                    type="text"
+                    className="w-full py-2 pl-10 pr-4 text-black bg-transparent border rounded-lg  dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-opacity-40 focus:ring-blue-300"
+                    placeholder="Search"
+                  />
+                </div>
+                <div className="">
+                  <Button className=" text-white font-semibold bg-red-600" onClick={() => { router.push('/create-account') }}>Logout</Button>
+                </div>
+                <ModeToggle />
+              </div>
+            </div>
           </div>
         </div>
       </nav>
