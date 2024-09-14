@@ -8,33 +8,34 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { ChevronLeft, ChevronRight, CheckCircle, XCircle, Clock } from 'lucide-react'
 import Camera from './camera'
 
-const questions = [
-  {
-    id: 1,
-    question: "What is the capital of France?",
-    options: ["London", "Berlin", "Paris", "Madrid"],
-    correctAnswer: "Paris"
-  },
-  {
-    id: 2,
-    question: "Which planet is known as the Red Planet?",
-    options: ["Mars", "Venus", "Jupiter", "Saturn"],
-    correctAnswer: "Mars"
-  },
-  {
-    id: 3,
-    question: "Who painted the Mona Lisa?",
-    options: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"],
-    correctAnswer: "Leonardo da Vinci"
-  }
-]
-
 export default function TestPage() {
+  const [questions, setQuestions] = useState([]) // State to hold questions
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [answers, setAnswers] = useState({})
   const [submitted, setSubmitted] = useState(false)
   const [score, setScore] = useState(0)
   const [timer, setTimer] = useState(0)
+  const [loading, setLoading] = useState(true) // State to track loading
+
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const response = await fetch(`${process.env.API_URL}api/tests/66e558d57cc5f34db811fda9`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch questions');
+        }
+        const data = await response.json();
+        console.log(data);
+        setQuestions(data.questions); // Set questions from API response
+      } catch (error) {
+        console.error("Error fetching questions:", error);
+      } finally {
+        setLoading(false); // Set loading to false after fetching
+      }
+    };
+
+    fetchQuestions(); // Fetch questions on component mount
+  }, []);
 
   const currentQuestion = questions[currentQuestionIndex]
 
@@ -69,14 +70,14 @@ export default function TestPage() {
   const handleAnswerChange = (value) => {
     setAnswers({
       ...answers,
-      [currentQuestion.id]: value
+      [currentQuestion._id]: value // Use _id for answers
     })
   }
 
   const handleSubmit = () => {
     let newScore = 0
     questions.forEach(question => {
-      if (answers[question.id] === question.correctAnswer) {
+      if (answers[question._id] === question.options[question.correctAnswer]) { // Compare with correct answer
         newScore++
       }
     })
@@ -85,7 +86,11 @@ export default function TestPage() {
   }
 
   const isAnswerCorrect = (questionId) => {
-    return answers[questionId] === questions.find(q => q.id === questionId).correctAnswer
+    return answers[questionId] === questions.find(q => q._id === questionId).options[questions.find(q => q._id === questionId).correctAnswer]; // Check against correct answer
+  }
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>; // Show loading state
   }
 
   return (
@@ -97,12 +102,12 @@ export default function TestPage() {
           <ScrollArea className="h-[calc(100vh-8rem)]">
             {questions.map((question, index) => (
               <Button
-                key={question.id}
+                key={question._id}
                 variant="ghost"
                 className={`w-full justify-start mb-2 ${
                   index === currentQuestionIndex ? 'bg-gray-100' : ''
                 } ${
-                  answers[question.id] 
+                  answers[question._id] 
                     ? 'bg-green-600 hover:text-white hover:bg-green-500' 
                     : 'bg-gray-500 hover:text-white hover:bg-gray-500'
                 }`}
@@ -115,7 +120,7 @@ export default function TestPage() {
         </div>
       </div>
 
-      {/* Main content */}
+
       <div className="flex-1 p-4">
         <div className="w-full mx-auto space-y-4">
           <Card>
@@ -139,29 +144,29 @@ export default function TestPage() {
           <Card>
             <CardContent className="space-y-6 p-6">
               <RadioGroup
-                value={answers[currentQuestion.id] || ""}
+                value={answers[currentQuestion._id] || ""}
                 onValueChange={handleAnswerChange}
                 disabled={submitted}
               >
                 {currentQuestion.options.map((option, index) => (
                   <div key={index} className="flex items-center space-x-2">
-                    <RadioGroupItem value={option} id={`option-${index}`} />
+                    <RadioGroupItem value={index.toString()} id={`option-${index}`} /> {/* Use index as value */}
                     <Label htmlFor={`option-${index}`}>{option}</Label>
                   </div>
                 ))}
               </RadioGroup>
               {submitted && (
-                <Alert variant={isAnswerCorrect(currentQuestion.id) ? "default" : "destructive"}>
+                <Alert variant={isAnswerCorrect(currentQuestion._id) ? "default" : "destructive"}>
                   <AlertTitle>
-                    {isAnswerCorrect(currentQuestion.id) ? (
+                    {isAnswerCorrect(currentQuestion._id) ? (
                       <CheckCircle className="h-4 w-4 inline-block mr-2" />
                     ) : (
                       <XCircle className="h-4 w-4 inline-block mr-2" />
                     )}
-                    {isAnswerCorrect(currentQuestion.id) ? "Correct!" : "Incorrect"}
+                    {isAnswerCorrect(currentQuestion._id) ? "Correct!" : "Incorrect"}
                   </AlertTitle>
                   <AlertDescription>
-                    The correct answer is: {currentQuestion.correctAnswer}
+                    The correct answer is: {currentQuestion.options[currentQuestion.correctAnswer]}
                   </AlertDescription>
                 </Alert>
               )}

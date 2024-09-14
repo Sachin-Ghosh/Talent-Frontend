@@ -75,26 +75,21 @@ const SideNavbar = ({ isOpen }) => {
             route: '',
             icon: RxDashboard,
         },
+        
         {
             id: 2,
-            name: 'Interview Preparations',
-            route: 'study-material',
-            icon: FaBook,
-        },
-        {
-            id: 3,
             name: 'Jobs',
-            route: 'Jobs', // Adjust route to lowercase
+            route: 'jobs', // Adjust route to lowercase
             icon: BriefcaseBusiness,
         },
         {
-            id: 4,
+            id: 3,
             name: 'Profile',
             route: 'profile',
             icon: ImProfile
         },
         {
-            id: 5,
+            id: 4,
             name: 'Blogs',
             route: 'blogs',
             icon: RiBloggerFill

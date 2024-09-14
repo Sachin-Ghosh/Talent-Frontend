@@ -19,7 +19,7 @@ const JobCard = ({ job }) => {
       <h3 className="text-gray-900 text-xl font-semibold mb-2">{job.title}</h3>
       <div className="flex items-center mb-2">
         <FaMoneyBillWave className="text-green-500 mr-2" />
-        <p className="text-gray-900 font-bold">{job.salaryRange}</p>
+        <p className="text-gray-900 font-bold">{`₹ ${job.expectedSalaryRange.min.toLocaleString()} - ₹${job.expectedSalaryRange.max.toLocaleString()}`}</p>
       </div>
       <div className="flex items-center">
         <FaMapMarkerAlt className="text-red-500 mr-2" />

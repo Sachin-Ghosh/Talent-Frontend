@@ -95,143 +95,68 @@
 // export default ApplyJobModal;
 
 import React, { useState, useEffect } from 'react';
+// import { toast } from 'sonner';
 
-const ApplyJobModal = ({ isOpen, candidateId, onClose }) => {
-  const [formData, setFormData] = useState({
-    education: { degree: '', institution: '', yearOfCompletion: '' },
-    experience: [{ companyName: '', role: '', yearsWorked: '' }],
-    skills: '',
-  });
-
+const ApplyJobModal = ({ isOpen, candidateId, jobId, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  // Fetch user data from the API when the modal is open
-  useEffect(() => {
-    if (isOpen && candidateId) {
-      setIsLoading(true);
-      fetch(`https://talent-backend-wfqd.onrender.com/api/candidates/${candidateId}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setFormData({
-            education: data.education || { degree: '', institution: '', yearOfCompletion: '' },
-            experience: data.experience || [{ companyName: '', role: '', yearsWorked: '' }],
-            skills: (data.skills || []).join(', '), // Convert skills array to a comma-separated string
-          });
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          console.error('Error fetching candidate:', error);
-          setIsLoading(false);
-        });
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // console.log('candidateId');
+      const response = await fetch(`${process.env.API_URL}api/applications`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ candidateId, jobId }),
+        // credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit application');
+      }
+
+      const data = await response.json();
+      console.log('Application submitted successfully:', data);
+      onClose();
+      alert('Application submitted successfully')
+    } catch (error) {
+      console.error('Error submitting application:', error);
+      alert('Failed to submit application. Please try again.')
+      setError('Failed to submit application. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
-  }, [isOpen, candidateId]);
-
-  // Handle form submission (placeholder function)
-  const handleSubmit = () => {
-    console.log('Form submitted:', formData);
-    onClose(); // Close the modal after submission
   };
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-      <div
-        className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg overflow-y-auto"
-        style={{ maxHeight: '90vh' }}
-      >
-        <h2 className="text-2xl font-bold mb-4">Candidate Information</h2>
-
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : (
-          <>
-            {/* Education Section */}
-            <div className="mb-4">
-              <label className="block text-gray-700 font-bold mb-2">Degree</label>
-              <input
-                type="text"
-                value={formData.education.degree}
-                className="w-full p-2 border border-gray-300 rounded-md"
-                readOnly
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 font-bold mb-2">Institution</label>
-              <input
-                type="text"
-                value={formData.education.institution}
-                className="w-full p-2 border border-gray-300 rounded-md"
-                readOnly
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 font-bold mb-2">Year of Completion</label>
-              <input
-                type="text"
-                value={formData.education.yearOfCompletion}
-                className="w-full p-2 border border-gray-300 rounded-md"
-                readOnly
-              />
-            </div>
-
-            {/* Experience Section */}
-            <div className="mb-4">
-              <label className="block text-gray-700 font-bold mb-2">Company Name</label>
-              <input
-                type="text"
-                value={formData.experience[0]?.companyName || ''}
-                className="w-full p-2 border border-gray-300 rounded-md"
-                readOnly
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 font-bold mb-2">Role</label>
-              <input
-                type="text"
-                value={formData.experience[0]?.role || ''}
-                className="w-full p-2 border border-gray-300 rounded-md"
-                readOnly
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 font-bold mb-2">Years Worked</label>
-              <input
-                type="text"
-                value={formData.experience[0]?.yearsWorked || ''}
-                className="w-full p-2 border border-gray-300 rounded-md"
-                readOnly
-              />
-            </div>
-
-            {/* Skills Section */}
-            <div className="mb-4">
-              <label className="block text-gray-700 font-bold mb-2">Skills</label>
-              <input
-                type="text"
-                value={formData.skills}
-                className="w-full p-2 border border-gray-300 rounded-md"
-                readOnly
-              />
-            </div>
-
-            {/* Buttons Section */}
-            <div className="flex justify-end space-x-4 mt-4">
-              <button
-                onClick={onClose}
-                className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSubmit}
-                className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
-              >
-                Submit
-              </button>
-            </div>
-          </>
-        )}
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+        <h2 className="text-2xl font-bold mb-4">Apply for Job</h2>
+        {error && <p className="text-red-500 mb-4">{error}</p>}
+        <p className="mb-4">Are you sure you want to apply for this job?</p>
+        <div className="flex justify-end space-x-4">
+          <button
+            onClick={onClose}
+            className="bg-gray-300 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-400"
+            disabled={isLoading}
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleSubmit}
+            className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+            disabled={isLoading}
+          >
+            {isLoading ? 'Submitting...' : 'Submit Application'}
+          </button>
+        </div>
       </div>
     </div>
   );
