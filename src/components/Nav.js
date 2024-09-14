@@ -12,7 +12,7 @@ const Nav = ({ toggleSidebar }) => {
   const router=useRouter();
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 bg-transparent backdrop-blur-md z-50 border-b-2 border-blue-500">
+      <nav className="relative top-0 left-0 right-0 bg-transparent backdrop-blur-md z-50 border-b-2 border-blue-500">
         <div className="container px-6 mx-auto md:flex md:justify-center md:items-center">
       <Button className="bg-transparent active:ring active:rounded-full hover:border-2 hover:rounded-full hover:bg-transparent" onClick={toggleSidebar}>
             <IoIosMenu size={30} color='grey'/>
