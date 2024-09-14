@@ -60,6 +60,8 @@ import { RxDashboard } from 'react-icons/rx';
 import { FaBook } from 'react-icons/fa';
 import { BriefcaseBusiness } from 'lucide-react';
 import { IoIosArrowForward } from 'react-icons/io';
+import { RiBloggerFill } from "react-icons/ri";
+import { ImProfile } from "react-icons/im";
 import Link from 'next/link';
 
 const SideNavbar = ({ isOpen }) => {
@@ -82,29 +84,32 @@ const SideNavbar = ({ isOpen }) => {
             route: 'jobs', // Adjust route to lowercase
             icon: BriefcaseBusiness,
         },
+        {
+            id: 4,
+            name: 'Profile',
+            route: '/profile',
+            icon: ImProfile
+        },
+        {
+            id: 4,
+            name: 'Blogs',
+            route: '/blogs',
+            icon: RiBloggerFill
+        },
+       
     ];
 
     return (
-        <aside
-            className={`dark:bg-slate-950 bg-white h-screen absolute border-2 top-20 left-0 transform ${
-                isOpen ? 'translate-x-0' : '-translate-x-full'
-            } transition-transform duration-300 ease-in-out w-72 z-10`}
-        >
+        <aside className={`dark:bg-slate-950 bg-white h-[90rem] absolute border-2 top-20 b order-2 left-0 transform mr-12 ${
+            isOpen ? 'translate-x-0' : '-translate-x-full'
+        } transition-transform duration-300 ease-in-out w-72 z-10`}>
             <div className="flex flex-col gap-4 px-4 py-3">
                 {menu.map((item, index) => (
-                    <Link href={`/${item.route}`} key={item.id}>
-                        <div
-                            className={`flex items-center gap-3 p-2 cursor-pointer ${
-                                index === 0
-                                    ? 'bg-blue-700 text-white'
-                                    : 'hover:bg-blue-700 hover:text-white'
-                            } rounded-md font-semibold`}
-                        >
-                            <item.icon size={20} />
-                            <span>{item.name}</span>
-                            <IoIosArrowForward className="ml-auto" />
-                        </div>
-                    </Link>
+                    <div key={item.id} className={`flex items-center gap-3 p-2 cursor-pointer ${index === 0 ? 'bg-purple-700 text-white' : 'hover:bg-purple-700 hover:text-white'} rounded-md font-semibold`}>
+                        <item.icon size={20} />
+                        <Link href={`/${item.route}`}>{item.name}</Link>
+                        <IoIosArrowForward className="ml-auto"/>
+                    </div>
                 ))}
             </div>
         </aside>

@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider.js";
 import SideNavbar from "@/components/Sidebar";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { Toaster } from "@/components/ui/sonner"
 
 export default function App({ Component, pageProps }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -27,7 +28,7 @@ export default function App({ Component, pageProps }) {
         enableSystem
         disableTransitionOnChange
       >
-        {!noLayoutRoutes.includes(router.pathname) && (
+        {/* {!noLayoutRoutes.includes(router.pathname) && (
           <>
             <Nav toggleSidebar={toggleSidebar} />
             <SideNavbar isOpen={sidebarOpen} />
@@ -38,4 +39,17 @@ export default function App({ Component, pageProps }) {
       </ThemeProvider>
     </>
   );
+} */}
+        <Nav toggleSidebar={toggleSidebar} />
+        <div className={`flex ${sidebarOpen ? 'pl-64' : 'pl-0'} transition-all duration-300`}>
+          <SideNavbar isOpen={sidebarOpen} />
+          <div className="flex-grow p-5">
+            <Component {...pageProps} className="relative mt-10" />
+          </div>
+        </div>
+        <Toaster />
+        <Footer />
+      </ThemeProvider>
+    </>
+  )
 }
