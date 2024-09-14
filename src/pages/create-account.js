@@ -155,7 +155,7 @@ const SignIn = () => {
       const data = await response.json();
       console.log('User signed in successfully:', data);
 
-      router.push('/dashboard'); 
+      router.push('/personal-info'); 
 
     } catch (error) {
       console.error('Error:', error);

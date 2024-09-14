@@ -5,7 +5,7 @@ import JobCard from '@/components/JobCard';
 const JobsPage = ({ jobs }) => {
   if (!jobs || jobs.length === 0) {
     return (
-      <div className="max-w-4xl mx-auto p-8 mt-14">
+      <div className="max-w-4xl mx-auto p-8 mt-14 min-h-screen">
         <h1 className="text-3xl font-bold mb-6">Available Jobs</h1>
         <p>No jobs available at the moment. Please check back later.</p>
       </div>
@@ -13,7 +13,7 @@ const JobsPage = ({ jobs }) => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-8 mt-14">
+    <div className="max-w-4xl mx-auto p-8 mt-14 min-h-screen">
       <h1 className="text-3xl font-bold mb-6">Available Jobs</h1>
       {jobs.map((job) => (
         <JobCard key={job._id} job={job} />
