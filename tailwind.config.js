@@ -53,9 +53,18 @@ module.exports = {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
-  			}
-  		}
-  	}
+  			},
+  		},
+		  keyframes: {
+			heartbeat: {
+				'0%, 100%': { transform: 'scale(1)' },
+				'50%': { transform: 'scale(1.3)' },
+			},
+		},
+		animation: {
+			heartbeat: 'heartbeat 1.5s ease-in-out infinite',
+		},
+  	},
   },
   plugins: [require("tailwindcss-animate")],
 };
