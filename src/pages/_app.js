@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { Toaster } from "@/components/ui/sonner"
 
 export default function App({ Component, pageProps }) {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
 
   const toggleSidebar = () => {
