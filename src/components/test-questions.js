@@ -8,7 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { ChevronLeft, ChevronRight, CheckCircle, XCircle, Clock } from 'lucide-react'
 import Camera from './Camera'
 
-export default function TestPage() {
+const TestQuestions = () => {
   const [questions, setQuestions] = useState([]) // State to hold questions
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [answers, setAnswers] = useState({})
@@ -214,4 +214,6 @@ export default function TestPage() {
       </div>
     </div>
   )
-}
+};
+
+export default TestQuestions;

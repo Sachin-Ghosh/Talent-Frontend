@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Clock, FileText } from "lucide-react"
-import TestPage from '@/components/Test-questions'
+// import TestQuestions from '@/components/Test-questions'
+import TestQuestions from '@/components/Test-questions'
 
-export default function Component() {
+export default function TestPage() {
   const [testStarted, setTestStarted] = useState(false)
 
   const handleStartTest = () => {
@@ -18,7 +19,7 @@ export default function Component() {
         <Card className="w-full">
           <CardContent className="p-6">
             <h2 className="text-2xl font-bold mb-4">Test in Progress</h2>
-            <TestPage/>
+            <TestQuestions/>
           </CardContent>
 
         </Card>
