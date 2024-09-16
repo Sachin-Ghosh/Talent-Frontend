@@ -7,11 +7,11 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/api/users/',
-        destination: process.env.API_URL + 'api/users/', // Replace with the URL of your backend server
+        source: '/api/users/:path*',
+        destination: 'https://talent-backend-wfqd.onrender.com/api/users/:path*'
       },
     ];
   },
 };
 
-export default nextConfig;
+export default nextConfig;
