@@ -1,6 +1,7 @@
 
 
 import React, { useEffect, useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -11,11 +12,13 @@ import Image from 'next/image';
 export default function ProfilePage() {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { token } = useAuth();
 
   // Function to fetch the user's profile data
   const fetchProfile = async () => {
+    // if (!token) return;
     try {
-      const response = await fetch('https://talent-backend-wfqd.onrender.com/api/candidates/66e52262d590b649056253cd', {
+      const response = await fetch(`${process.env.API_URL}api/candidates/profile`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

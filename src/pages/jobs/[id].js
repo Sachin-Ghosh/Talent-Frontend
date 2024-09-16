@@ -167,7 +167,7 @@ export const getServerSideProps = async (context) => {
 // export default JobDetails;
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import ApplyJobModal from '@/components/applyJobModal';
+import ApplyJobModal from '@/components/ApplyJobModal';
 import Loader from '@/components/Loader';
 
 const JobDetails = () => {

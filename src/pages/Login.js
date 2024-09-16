@@ -118,7 +118,10 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { useRouter } from 'next/router'; // Import useRouter for redirection
 
+import { useAuth } from '@/context/AuthContext';
+
 const Login = () => {
+  const { token, login } = useAuth();
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -139,7 +142,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('https://talent-backend-wfqd.onrender.com/api/users/login', {
+      const response = await fetch(`${process.env.API_URL}api/users/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -152,8 +155,15 @@ const Login = () => {
       }
 
       const data = await response.json();
+      console.log('Login successful:', data);
+      login(data);
       // Redirect to the dashboard on successful login
-      router.push('/Login');
+      // router.push('/login');
+      if (data?.role === 'candidate') {
+        router.push('/personal-info');
+      } else if (data?.role === 'employer') {
+        router.push('/dashboard');
+      }
     } catch (error) {
       console.error('Error:', error);
       alert(error.message);
@@ -203,6 +213,7 @@ const Login = () => {
           <h1 className="text-black">Don{"'"}t have an account?</h1>
           <Link href="/create-account" className="text-md text-gray-700 hover:underline font-semibold">Create One!</Link>
         </div>
+        {/* {errorMessage && <p className="text-red-500">{errorMessage}</p>} */}
       </div>
     </div>
   );

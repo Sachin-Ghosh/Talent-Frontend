@@ -6,7 +6,7 @@ const JobScreening = () => {
   const [screening, setScreening] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-  const  applicationId  = "66e571cc4c7d84b7366ac84e";
+  const  applicationId  = "66e68058cb87f02c051fa8b6";
 
   useEffect(() => {
     const fetchScreening = async () => {
@@ -17,6 +17,7 @@ const JobScreening = () => {
         });
         if (!response.ok) throw new Error('Failed to fetch screening data');
         const data = await response.json();
+        console.log(data);
         setScreening(data);
       } catch (error) {
         console.error('Error fetching screening data:', error);
@@ -40,6 +41,7 @@ const JobScreening = () => {
       if (!response.ok) throw new Error('Failed to start screening');
       const data = await response.json();
       setScreening(data.screening);
+      console.log(data);
     //   toast.success('Screening started successfully');
     } catch (error) {
       console.error('Error starting screening:', error);
@@ -49,11 +51,13 @@ const JobScreening = () => {
 
   const processStage2 = async () => {
     try {
-      const atsScore = Math.floor(Math.random() * 31) + 70; // Random score between 70 and 100
+      const atsScore = Math.floor(Math.random() * 31) + 70;
+      const expectedSalary = "100000";
+       // Random score between 70 and 100
       const response = await fetch(`${process.env.API_URL}api/screening/stage2`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ screeningId: screening._id, atsScore }),
+        body: JSON.stringify({ screeningId: screening._id, atsScore , expectedSalary}),
         // credentials: 'include',
       });
       if (!response.ok) throw new Error('Failed to process Stage 2');

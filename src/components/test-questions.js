@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { ChevronLeft, ChevronRight, CheckCircle, XCircle, Clock } from 'lucide-react'
-import Camera from './camera'
+import Camera from './Camera'
 
 export default function TestPage() {
   const [questions, setQuestions] = useState([]) // State to hold questions

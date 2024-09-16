@@ -114,7 +114,9 @@
 
 // export default SignIn;
 
+import { myFetch } from '@/utils/myFetch';
 import { useRouter } from 'next/router';
+import { useAuth } from '@/context/AuthContext'; 
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
@@ -155,7 +157,7 @@ const SignIn = () => {
       const data = await response.json();
       console.log('User signed in successfully:', data);
 
-      router.push('/personal-info'); 
+      router.push('/login'); 
 
     } catch (error) {
       console.error('Error:', error);
@@ -207,7 +209,7 @@ const SignIn = () => {
               <label className="block mb-2 text-sm font-medium text-black" htmlFor="role">Role</label>
               <select id="role" name="role" value={formData.role} onChange={handleChange} className="block w-full px-4 py-2 text-black bg-transparent border rounded-lg focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300">
                 <option value="candidate">Candidate</option>
-                <option value="employee">Employee</option>
+                <option value="employer">Employee</option>
               </select>
             </div>
 
@@ -218,7 +220,7 @@ const SignIn = () => {
 
           <div className="flex gap-4 mx-4 my-2 items-center mt-4">
   <h1 className="text-black">Already have an account?</h1>
-  <Link href="/Login" className="text-md text-gray-700 hover:underline font-semibold">
+  <Link href="/login" className="text-md text-gray-700 hover:underline font-semibold">
     Login To Account!
   </Link>
 </div>

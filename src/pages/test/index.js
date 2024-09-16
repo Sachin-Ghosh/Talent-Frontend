@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Clock, FileText } from "lucide-react"
-import TestPage from '@/components/test-questions'
+import TestPage from '@/components/Test-questions'
 
 export default function Component() {
   const [testStarted, setTestStarted] = useState(false)
