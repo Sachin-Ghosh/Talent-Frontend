@@ -11,7 +11,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { ModeToggle } from "./Mode-toggle";
+// import { ModeToggle } from "./Mode-toggle";
 import { IoIosMenu } from "react-icons/io";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/router";
@@ -52,11 +52,11 @@ const Navbar = () => {
   // Ref to the sidebar element
   const sidebarRef = useRef(null);
 
-  console.log("Token:", token); // Debug log
-  console.log("AuthUser:", authUser); // Debug log
+  // console.log("Token:", token); // Debug log
+  // console.log("AuthUser:", authUser); // Debug log
 
   useEffect(() => {
-    console.log("Navbar rendered"); // Debug log
+    // console.log("Navbar rendered"); // Debug log
   }, []);
 
   // Close sidebar when a link is clicked

@@ -14,8 +14,8 @@ export const AuthProvider = ({ children }) => {
     // Check if the authentication token exists in the cookie
     const storedToken = getCookie("token");
     const storedAuthUser = getCookie("authUser");
-    console.log("Stored Token:", storedToken);
-    console.log("Stored AuthUser:", storedAuthUser);
+    // console.log("Stored Token:", storedToken);
+    // console.log("Stored AuthUser:", storedAuthUser);
 
     if (storedToken && storedAuthUser) {
       setToken(storedToken);
@@ -31,8 +31,8 @@ export const AuthProvider = ({ children }) => {
     setCookie("authUser", JSON.stringify(value.user || value));
     setCookie("token", value.token);
     
-    console.log("After setting - Token:", value.token);
-    console.log("After setting - AuthUser:", value.user || value);
+    // console.log("After setting - Token:", value.token);
+    // console.log("After setting - AuthUser:", value.user || value);
   };
 
   const logout = () => {
