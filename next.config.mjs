@@ -8,7 +8,7 @@ const nextConfig = {
     return [
       {
         source: '/api/users/',
-        destination: process.env.API_URL + '/api/users/', // Replace with the URL of your backend server
+        destination: process.env.API_URL + 'api/users/', // Replace with the URL of your backend server
       },
     ];
   },
