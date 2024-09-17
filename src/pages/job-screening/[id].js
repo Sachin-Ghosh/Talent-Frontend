@@ -6,7 +6,7 @@ const JobScreening = () => {
   const [screening, setScreening] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-  const  applicationId  = "66e68058cb87f02c051fa8b6";
+  const { id: applicationId } = router.query;
 
   useEffect(() => {
     const fetchScreening = async () => {
@@ -75,7 +75,7 @@ const JobScreening = () => {
   };
 
   if (isLoading) return <div>Loading...</div>;
-  if (!screening) return <div>No screening data available</div>;
+//   if (!screening) return <div>No screening data available</div>;
 
   return (
     <div className="container mx-auto p-4">
@@ -96,7 +96,7 @@ const JobScreening = () => {
           )}
         </div>
 
-        {screening.currentStage >= 2 && (
+        {screening?.currentStage >= 2 && (
           <div className="border p-4 rounded-lg">
             <h2 className="text-xl font-semibold">Stage 2: ATS Score and Salary Expectation</h2>
             {screening.stage2 ? (
@@ -113,7 +113,7 @@ const JobScreening = () => {
           </div>
         )}
 
-        {screening.currentStage >= 3 && (
+        {screening?.currentStage >= 3 && (
           <div className="border p-4 rounded-lg">
             <h2 className="text-xl font-semibold">Stage 3: Online Test</h2>
             {screening.stage3 ? (
@@ -129,7 +129,7 @@ const JobScreening = () => {
           </div>
         )}
 
-        {screening.currentStage === 4 && (
+        {screening?.currentStage === 4 && (
           <div className="border p-4 rounded-lg">
             <h2 className="text-xl font-semibold">Final Status</h2>
             <p>Status: {screening.finalStatus}</p>

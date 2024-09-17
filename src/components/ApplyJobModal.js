@@ -94,26 +94,27 @@
 
 // export default ApplyJobModal;
 
-import React, { useState, useEffect } from 'react';
-// import { toast } from 'sonner';
+
+
+
+import React, { useState } from 'react';
+import { toast } from 'sonner';
 
 const ApplyJobModal = ({ isOpen, candidateId, jobId, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [expectedSalary, setExpectedSalary] = useState('');
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setIsLoading(true);
-    setError(null);
 
     try {
-      // console.log('candidateId');
       const response = await fetch(`${process.env.API_URL}api/applications`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ candidateId, jobId }),
-        // credentials: 'include',
+        body: JSON.stringify({ candidateId, jobId, expectedSalary: Number(expectedSalary) }),
       });
 
       if (!response.ok) {
@@ -123,11 +124,10 @@ const ApplyJobModal = ({ isOpen, candidateId, jobId, onClose }) => {
       const data = await response.json();
       console.log('Application submitted successfully:', data);
       onClose();
-      alert('Application submitted successfully')
+      toast.success('Application submitted successfully');
     } catch (error) {
       console.error('Error submitting application:', error);
-      alert('Failed to submit application. Please try again.')
-      setError('Failed to submit application. Please try again.');
+      toast.error('Failed to submit application. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -139,24 +139,39 @@ const ApplyJobModal = ({ isOpen, candidateId, jobId, onClose }) => {
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
         <h2 className="text-2xl font-bold mb-4">Apply for Job</h2>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
-        <p className="mb-4">Are you sure you want to apply for this job?</p>
-        <div className="flex justify-end space-x-4">
-          <button
-            onClick={onClose}
-            className="bg-gray-300 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-400"
-            disabled={isLoading}
-          >
-            Cancel
-          </button>
-          <button
-            onClick={handleSubmit}
-            className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Submitting...' : 'Submit Application'}
-          </button>
-        </div>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label htmlFor="expectedSalary" className="block text-sm font-medium text-base-900">
+              Expected Salary (₹)
+            </label>
+            <input
+              type="number"
+              id="expectedSalary"
+              value={expectedSalary}
+              onChange={(e) => setExpectedSalary(e.target.value)}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              required
+            />
+          </div>
+          <p className="mb-4">Are you sure you want to apply for this job?</p>
+          <div className="flex justify-end space-x-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="bg-gray-300 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-400"
+              disabled={isLoading}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Submitting...' : 'Submit Application'}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
