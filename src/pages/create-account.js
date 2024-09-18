@@ -14,7 +14,8 @@ const SignIn = () => {
     role: 'candidate',
   });
 
-  const router = useRouter(); 
+  const router = useRouter();
+  const { login } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,10 +41,33 @@ const SignIn = () => {
       }
 
       const data = await response.json();
-      console.log('User signed in successfully:', data);
+      console.log('User registered successfully:', data);
 
-      router.push('/login'); 
+      // Automatically log in the user after successful registration
+      const loginResponse = await fetch(`${process.env.API_URL}api/users/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
 
+      if (!loginResponse.ok) {
+        throw new Error('Login failed after registration');
+      }
+
+      const loginData = await loginResponse.json();
+      login(loginData);
+
+      // Redirect based on user role
+      if (loginData?.role === 'candidate') {
+        router.push('/personal-info');
+      } else if (loginData?.role === 'employer') {
+        router.push('/dashboard');
+      }
     } catch (error) {
       console.error('Error:', error);
       alert('Registration failed. Please try again.');
@@ -94,7 +118,7 @@ const SignIn = () => {
               <label className="block mb-2 text-sm font-medium text-black" htmlFor="role">Role</label>
               <select id="role" name="role" value={formData.role} onChange={handleChange} className="block w-full px-4 py-2 text-black bg-transparent border rounded-lg focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300">
                 <option value="candidate">Candidate</option>
-                <option value="employer">Employee</option>
+                <option value="employer">Employer</option>
               </select>
             </div>
 
@@ -104,11 +128,11 @@ const SignIn = () => {
           </form>
 
           <div className="flex gap-4 mx-4 my-2 items-center mt-4">
-  <h1 className="text-black">Already have an account?</h1>
-  <Link href="/login" className="text-md text-gray-700 hover:underline font-semibold">
-    Login To Account!
-  </Link>
-</div>
+            <h1 className="text-black">Already have an account?</h1>
+            <Link href="/login" className="text-md text-gray-700 hover:underline font-semibold">
+              Login To Account!
+            </Link>
+          </div>
 
         </div>
       </div>

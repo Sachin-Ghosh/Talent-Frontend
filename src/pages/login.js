@@ -47,7 +47,7 @@ const Login = () => {
       // Redirect to the dashboard on successful login
       // router.push('/login');
       if (data?.role === 'candidate') {
-        router.push('/personal-info');
+        router.push('/dashboard');
       } else if (data?.role === 'employer') {
         router.push('/dashboard');
       }
