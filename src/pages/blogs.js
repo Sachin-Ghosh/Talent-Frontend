@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AiTwotoneLike } from "react-icons/ai";
 import { TfiCommentAlt } from "react-icons/tfi";
 import { useRouter } from 'next/router';
@@ -15,7 +15,7 @@ const BlogPost = ({ blog, showComments, onCommentClick }) => {
 
   // Function to handle redirection to the blog detail page
   const handleBlogClick = () => {
-    router.push(`/blogs/${blog.id}`);  // Redirect to dynamic blog page with blog-id
+    router.push(`/blogs/${blog._id}`);  // Redirect to dynamic blog page with blog-id
   };
 
   return (
@@ -23,8 +23,8 @@ const BlogPost = ({ blog, showComments, onCommentClick }) => {
       <div className="flex items-center">
         <Image className="w-auto h-7 sm:h-12" src="/assets/Nav-logo.png" alt="Logo" width={100} height={100} />
         <div className="flex flex-col">
-          <h1 className="font-semibold text-lg">{blog.author}</h1>
-          <h1 className="font-semibold text-xs text-gray-600">{blog.role}</h1>
+          <h1 className="font-semibold text-lg">{blog.author.name}</h1>
+          <h1 className="font-semibold text-xs text-gray-600">{blog.profession}</h1>
         </div>
       </div>
       <div className='ml-6'>
@@ -33,7 +33,7 @@ const BlogPost = ({ blog, showComments, onCommentClick }) => {
       <hr className="bg-gray-700" />
       <div className="w-full h-96 bg-gray-300">
         {/* Blog Image */}
-        <Image src={blog.image} alt={blog.title} width={400} height={300} />
+        <Image src={blog.imageLink} alt={blog.title} width={400} height={300} />
       </div>
       <div className="flex gap-2 justify-around">
         <Button className="bg-transparent hover:bg-transparent shadow-none p-1 rounded-full active:bg-blue-300">
@@ -91,17 +91,26 @@ const swiperOptions = {
 
 const Blogs = () => {
   const [showComments, setShowComments] = useState(false);
+  const [blogs, setBlogs] = useState([]);
 
   const handleCommentClick = () => {
     setShowComments(!showComments);
   };
 
-  // Sample blog data
-  const blogs = [
-    { id: 1, author: 'John Doe', role: 'Software Engineer', title: 'Blog Post 1', image: '/path/to/image1.jpg' },
-    { id: 2, author: 'Jane Doe', role: 'Data Scientist', title: 'Blog Post 2', image: '/path/to/image2.jpg' },
-    // Add more blog data here
-  ];
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await fetch(`${process.env.API_URL}api/blogs/all`);
+        if (!response.ok) throw new Error('Failed to fetch blogs');
+        const data = await response.json();
+        setBlogs(data);
+      } catch (error) {
+        console.error('Error fetching blogs:', error);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
 
   return (
     <div className="flex flex-col gap-4 sm:m-6 m-1">
