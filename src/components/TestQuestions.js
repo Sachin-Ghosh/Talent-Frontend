@@ -1,32 +1,38 @@
-import React, { useState, useEffect } from 'react'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Label } from "@/components/ui/label"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { ChevronLeft, ChevronRight, CheckCircle, XCircle, Clock } from 'lucide-react'
-import Camera from './Camera'
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { ChevronLeft, ChevronRight, CheckCircle, XCircle, Clock } from 'lucide-react';
+import Camera from './Camera';
 
-const TestQuestions = () => {
-  const [questions, setQuestions] = useState([]) // State to hold questions
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-  const [answers, setAnswers] = useState({})
-  const [submitted, setSubmitted] = useState(false)
-  const [score, setScore] = useState(0)
-  const [timer, setTimer] = useState(0)
-  const [loading, setLoading] = useState(true) // State to track loading
+const TestQuestions = ({ candidateId, jobId, applicationId }) => {
+  const [questions, setQuestions] = useState([]); // State to hold questions
+  const [testId, setTestId] = useState(null); // State to hold test ID
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState({});
+  const [submitted, setSubmitted] = useState(false);
+  const [score, setScore] = useState(0);
+  const [timer, setTimer] = useState(0);
+  const [loading, setLoading] = useState(true); // State to track loading
+  const router = useRouter();
 
   useEffect(() => {
     const fetchQuestions = async () => {
+      console.log("CandidateID", candidateId, "JobID", jobId);
       try {
-        const response = await fetch(`${process.env.API_URL}api/tests/66e558d57cc5f34db811fda9`);
+        const url = `${process.env.API_URL}api/tests/${candidateId._id}/${jobId._id}`;
+        const response = await fetch(url);
         if (!response.ok) {
           throw new Error('Failed to fetch questions');
         }
         const data = await response.json();
         console.log(data);
         setQuestions(data.questions); // Set questions from API response
+        setTestId(data._id); // Set test ID from API response
       } catch (error) {
         console.error("Error fetching questions:", error);
       } finally {
@@ -35,59 +41,92 @@ const TestQuestions = () => {
     };
 
     fetchQuestions(); // Fetch questions on component mount
-  }, []);
+  }, [candidateId, jobId]);
 
-  const currentQuestion = questions[currentQuestionIndex]
+  const currentQuestion = questions[currentQuestionIndex];
 
   useEffect(() => {
-    let interval
+    let interval;
     if (!submitted) {
       interval = setInterval(() => {
-        setTimer(prevTimer => prevTimer + 1)
-      }, 1000)
+        setTimer(prevTimer => prevTimer + 1);
+      }, 1000);
     }
-    return () => clearInterval(interval)
-  }, [submitted])
+    return () => clearInterval(interval);
+  }, [submitted]);
 
   const formatTime = (time) => {
-    const minutes = Math.floor(time / 60)
-    const seconds = time % 60
-    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
-  }
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
 
   const handleNext = () => {
     if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1)
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
-  }
+  };
 
   const handlePrevious = () => {
     if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1)
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
     }
-  }
+  };
 
   const handleAnswerChange = (value) => {
     setAnswers({
       ...answers,
       [currentQuestion._id]: value // Use _id for answers
-    })
-  }
+    });
+  };
 
-  const handleSubmit = () => {
-    let newScore = 0
+  const handleSubmit = async () => {
+    let newScore = 0;
+    const responses = questions.map(question => ({
+      questionId: question._id,
+      selectedOption: parseInt(answers[question._id], 10) // Ensure selectedOption is an integer
+    }));
+
     questions.forEach(question => {
       if (answers[question._id] === question.options[question.correctAnswer]) { // Compare with correct answer
-        newScore++
+        newScore++;
       }
-    })
-    setScore(newScore)
-    setSubmitted(true)
-  }
+    });
+
+    setScore(newScore);
+    setSubmitted(true);
+
+    try {
+      const response = await fetch(`${process.env.API_URL}api/tests/submit`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          candidateId,
+          jobId,
+          testId, // Use the test ID stored in state
+          responses
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit test');
+      }
+
+      const data = await response.json();
+      console.log('Test submitted successfully:', data);
+
+      // Redirect to job screening page with application ID
+      router.push(`/job-screening/${applicationId}`);
+    } catch (error) {
+      console.error('Error submitting test:', error);
+    }
+  };
 
   const isAnswerCorrect = (questionId) => {
     return answers[questionId] === questions.find(q => q._id === questionId).options[questions.find(q => q._id === questionId).correctAnswer]; // Check against correct answer
-  }
+  };
 
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>; // Show loading state
@@ -102,15 +141,8 @@ const TestQuestions = () => {
           <ScrollArea className="h-[calc(100vh-8rem)]">
             {questions.map((question, index) => (
               <Button
-                key={question._id}
-                variant="ghost"
-                className={`w-full justify-start mb-2 ${
-                  index === currentQuestionIndex ? 'bg-gray-100' : ''
-                } ${
-                  answers[question._id] 
-                    ? 'bg-green-600 hover:text-white hover:bg-green-500' 
-                    : 'bg-gray-500 hover:text-white hover:bg-gray-500'
-                }`}
+                key={index}
+                variant={currentQuestionIndex === index ? "default" : "outline"}
                 onClick={() => setCurrentQuestionIndex(index)}
               >
                 Question {index + 1}
@@ -119,7 +151,6 @@ const TestQuestions = () => {
           </ScrollArea>
         </div>
       </div>
-
 
       <div className="flex-1 p-4">
         <div className="w-full mx-auto space-y-4">
@@ -208,12 +239,11 @@ const TestQuestions = () => {
               )}
             </CardFooter>
           </Card>
-
         </div>
         <Camera/>
       </div>
     </div>
-  )
+  );
 };
 
 export default TestQuestions;
