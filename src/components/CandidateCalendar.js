@@ -28,9 +28,11 @@ const CandidateCalendar = () => {
   const fetchAvailableSlots = async () => {
     try {
       const response = await fetch(`${process.env.API_URL}api/interview-slots/${jobId}`);
+      console.log(response)
       if (response.ok) {
         const result = await response.json();
         setAvailableSlots(result.availableSlots);
+        console.log(availableSlots)
       } else {
         console.error('Failed to fetch available slots');
       }
@@ -73,6 +75,7 @@ const CandidateCalendar = () => {
 
       if (response.ok) {
         const result = await response.json();
+        console.log(result)
         toast.success('Slot booked successfully!');
         setSelectedSlot(null);
         setIsModalOpen(false);
@@ -117,24 +120,25 @@ const CandidateCalendar = () => {
 
       {/* Modal for Slot Confirmation */}
       {selectedSlot && (
-        <Modal
-          trigger={<></>}
-          title="Confirm Slot Booking"
-          content={
-            <>
-              <p>Are you sure you want to book this slot?</p>
-              <Button
-                onClick={handleSlotBooking}
-                className="bg-green-500 text-white px-4 py-2 mt-4 rounded-md"
-              >
-                Confirm
-              </Button>
-            </>
-          }
-          openModal={isModalOpen}
-          setOpenModal={setIsModalOpen}
-        />
-      )}
+   <Modal
+   trigger={<></>} // Modal is triggered internally on save button click
+   title="Confirm Slot Booking"
+   content={
+     <>
+       <p>Are you sure you want to book these slots?</p>
+       <Button
+         onClick={handleSlotBooking}
+         className="bg-green-500 text-white px-4 py-2 mt-4 rounded-md"
+       >
+         Confirm
+       </Button>
+     </>
+   }
+   openModal={isModalOpen}
+   setOpenModal={setIsModalOpen}
+ />
+)}
+
       <Toaster position="top-right" />
     </div>
   );
