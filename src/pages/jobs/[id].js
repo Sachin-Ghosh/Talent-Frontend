@@ -59,7 +59,8 @@ const JobDetails = () => {
   if (!job) return <div>Job not found</div>;
 
   return (
-    <div className="max-w-2xl mx-auto p-8 mt-24 bg-white shadow-md rounded-lg w-full">
+    <div className="min-h-screen flex justify-center items-center">
+    <div className="max-w-2xl mx-auto p-8 pt-24 bg-white shadow-md rounded-lg w-full ">
       <h1 className="text-gray-900 text-3xl font-bold mb-4">{job.title}</h1>
       <p className="text-gray-700 mb-4">{job.description}</p>
       <p className="text-gray-900 font-bold"><strong>Expected Salary Range:</strong>{` ₹${job.expectedSalaryRange.min.toLocaleString()} - ₹${job.expectedSalaryRange.max.toLocaleString()}`}</p>
@@ -83,6 +84,7 @@ const JobDetails = () => {
           jobId={jobId}
         />
       )}
+    </div>
     </div>
   );
 };

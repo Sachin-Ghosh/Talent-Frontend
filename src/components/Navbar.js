@@ -88,7 +88,7 @@ const Navbar = () => {
   // }
   return (
     <>
-      <div className="relative navbar top-0 left-0 right-0 bg-transparent backdrop-blur-md z-50 border-b-2 border-blue-500">
+      <div className="relative flex items-center px-9 top-0 left-0 right-0 bg-transparent backdrop-blur-md z-50 border-b-2 border-blue-500">
         {token && (
           <div>
            
@@ -98,7 +98,7 @@ const Navbar = () => {
             {sidebarOpen && (
               <div
                 ref={sidebarRef}
-                className={`dark:bg-slate-950 bg-white h-full absolute  top-20 border-2 left-0 transform mr-12 ${
+                className={`dark:bg-slate-950 bg-white h-screen absolute  top-28 border-2 left-0 transform mr-12 ${
                   sidebarOpen ? "translate-x-0" : "-translate-x-full"
                 } transition-transform duration-300 ease-in-out w-72 z-10`}
               >
@@ -145,23 +145,7 @@ const Navbar = () => {
                       Blogs
                     </Link>
                   </li>
-                  {/* {authUser?.role === "Admin" && ( // Render the report link only for admin users
-                      <li>
-                        <Link href="/report" className="flex items-center gap-3 p-2 cursor-pointer bg-transparent text-black font-semibold shadow-none hover:bg-purple-700 hover:text-white rounded-md"  onClick={closeSidebar}>
-                        <BiSolidReport size={24} />
-
-                          Report
-                        </Link>
-                      </li>
-                    )}
-                <li>
-                  <Link href="/QRCodeGenerator" className="flex items-center gap-3 p-2 cursor-pointer bg-transparent text-black font-semibold shadow-none hover:bg-purple-700 hover:text-white rounded-md"  onClick={closeSidebar}>
-                  <IoQrCodeOutline  size={24}/>
-
-                  QRCode
                   
-                  </Link>
-                </li> */}
                 </ul>
               </div>
             )}
@@ -237,8 +221,8 @@ const Navbar = () => {
               isOpen ? "block" : "hidden"
             }`}
           >
-            <div className="bg-gradient-to-r from-blue-900 to-blue-300 md:flex justify-center items-center py-1 px-10 rounded-full hidden">
-              <div className="flex flex-col justify-center -mx-4 md:flex-row md:mx-10 md:py-0">
+            <div className="bg-gradient-to-r from-blue-900 to-blue-300 md:flex justify-center items-center px-10 rounded-full hidden">
+              {/* <div className="flex flex-col justify-center -mx-4 md:flex-row md:mx-10 md:py-0">
                 <Link
                   href="/"
                   className="px-2.5 text-white transition-colors duration-300 transform rounded-lg dark:text-gray-200 md:mx-2"
@@ -257,7 +241,7 @@ const Navbar = () => {
                 >
                   Contact
                 </Link>
-              </div>
+              </div> */}
               <div className="flex gap-2 justify-center items-center">
                 {/* <div className="relative mt-4 md:mt-0">
                   {/* <span className="absolute inset-y-0 left-0 flex items-center pl-3">
@@ -308,25 +292,18 @@ const Navbar = () => {
                       tabIndex={0}
                       role="button"
                       className="btn btn-ghost btn-circle avatar"
+                      class
                     >
-                      {/* <div className="w-10 rounded-full"> */}
+                    
                       <PiUser size={28} />
-                      {/* <img
-                                          alt="Tailwind CSS Navbar component"
-                                          src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                                        /> */}
-                      {/* </div> */}
+              
                     </div>
                     <ul className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
-                      {/* <li>
-                                        <Link href="/login">Login</Link>
-                                      </li> */}
+                     
                       <li>
                         <Link href="/profile">Profile</Link>
                       </li>
-                      {/* <li>
-                                        <Link href="/create-account">Sign Up</Link>
-                                      </li> */}
+                     
                       <li>
                         <button onClick={logout}>Logout</button>
                       </li>
