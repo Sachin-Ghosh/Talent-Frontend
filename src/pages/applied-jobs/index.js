@@ -7,26 +7,30 @@ const AppliedJobs = () => {
   const [applications, setApplications] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+//   const [candidateId, setCandidateId] = useState('');
   const { token, authUser } = useAuth();
 
   useEffect(() => {
     const fetchAppliedJobs = async () => {
       if (!authUser) return;
       try {
+        console.log(authUser._id)
         // Fetch candidate ID
-        const candidateResponse = await fetch(`${process.env.API_URL}api/candidates/user/${authUser._id}`, {
+        const candidateResponse = await fetch(`${process.env.API_URL}/api/candidates/user/${authUser._id}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
+        // console.log(candidateResponse.json());
         if (!candidateResponse.ok) throw new Error('Failed to fetch candidate details');
         const { candidateId } = await candidateResponse.json();
 
         // Fetch applications
-        const applicationsResponse = await fetch(`${process.env.API_URL}api/applications/candidate/${candidateId}`, {
+        const applicationsResponse = await fetch(`${process.env.API_URL}/api/applications/candidate/${candidateId}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (!applicationsResponse.ok) throw new Error('Failed to fetch applications');
         const applicationsData = await applicationsResponse.json();
         setApplications(applicationsData);
+        // console.log(applicationsData[1].jobId._id)
       } catch (error) {
         console.error('Error fetching applied jobs:', error);
         setError(error.message);
@@ -42,7 +46,7 @@ const AppliedJobs = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 min-h-screen">
       <h1 className="text-2xl font-bold mb-4">Applied Jobs</h1>
       {applications.length === 0 ? (
         <p>You haven't applied to any jobs yet.</p>
@@ -57,9 +61,14 @@ const AppliedJobs = () => {
               {application.screeningId && (
                 <p className="text-gray-600">Screening Stage: {application.screeningId.currentStage}</p>
               )}
+              <div className="flex justify-between">
               <Link href={`/job-screening/${application._id}`}>
                 <span className="text-blue-500 hover:underline cursor-pointer">View Screening Status</span>
               </Link>
+              <Link href={`/candidate-slots/${application.jobId._id}`}>
+                <span className="text-blue-500 hover:underline cursor-pointer no-underline">Schedule Your Slot</span>
+              </Link>
+              </div>
             </li>
           ))}
         </ul>

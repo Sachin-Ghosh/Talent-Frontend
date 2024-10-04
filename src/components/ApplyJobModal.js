@@ -98,7 +98,7 @@
 
 
 import React, { useState } from 'react';
-import { toast } from 'sonner';
+import { toast, Toaster } from 'sonner';
 
 const ApplyJobModal = ({ isOpen, candidateId, jobId, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -124,10 +124,10 @@ const ApplyJobModal = ({ isOpen, candidateId, jobId, onClose }) => {
       const data = await response.json();
       console.log('Application submitted successfully:', data);
       onClose();
-      toast.success('Application submitted successfully');
+      toast('Application submitted successfully');
     } catch (error) {
       console.error('Error submitting application:', error);
-      toast.error('Failed to submit application. Please try again.');
+      toast('Failed to submit application. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -149,7 +149,7 @@ const ApplyJobModal = ({ isOpen, candidateId, jobId, onClose }) => {
               id="expectedSalary"
               value={expectedSalary}
               onChange={(e) => setExpectedSalary(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-transparent"
               required
             />
           </div>
@@ -173,6 +173,7 @@ const ApplyJobModal = ({ isOpen, candidateId, jobId, onClose }) => {
           </div>
         </form>
       </div>
+      <Toaster position='top-right'/>
     </div>
   );
 };
